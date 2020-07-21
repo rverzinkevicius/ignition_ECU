@@ -1,0 +1,38 @@
+
+//most code will come from tacho_speedo project
+
+
+
+int advance = 0;
+
+int dwell_duration=3000+500; //+500 is to remember that dwell might be not enough during rapid increase of RPM, as dwell is calculated for next revolution, using current RPM
+
+unsigned long pickup=0;
+
+// get pickup time from ISR
+
+
+
+rpm=int(60000000/duration_rpm);
+
+
+// below is ignition advance degree calculation
+
+if (rpm<1000) {advance = 10;}
+if ((rpm>=1000) && (rpm<1300)) {advance = 17;}
+if ((rpm>=1300) && (rpm<1500)) {advance = 30-RPM/100;}
+if ((rpm>=1500) && (rpm<3000)) {advance = 15;}
+if ((rpm>=3000) && (rpm<4000)) {advance = 0.013*RPM-24;}
+if ((rpm>=4000) && (rpm<7000)) {advance = 28;}
+if ((rpm>=7000) && (rpm<8000)) {advance = 0.002*RPM+14;}
+if (rpm>=8000) {advance = 30;}
+
+
+spark=duration_rpm*(63-advance)/360;  // 63 (or 60?) is degrees BTDC of pickup signal for Piaggio LEADER engine
+
+dwell_start=duration_rpm + spark - dwell_duration;
+
+if (dwell_start>=duration_rpm ) {dwell_start-=duration_rpm;} 
+
+if (((micros()-pickup)>=dwell_start) && (!rpmflag)) {digitalwirte(sparkpin,HIGH);}
+if ((micros()-pickup)>=spark) {digitalwirte(sparkpin,LOW);}
