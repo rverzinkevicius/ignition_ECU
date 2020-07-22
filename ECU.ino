@@ -1,10 +1,7 @@
 #include <ESP8266WiFi.h>
-#include <EEPROM.h>
-#include <TFT_eSPI.h>
-#include <SPI.h>
 
 
-int sparkpin= D8;
+int sparkpin= D1;
 
 int advance = 0;
 unsigned long pickup=0;
