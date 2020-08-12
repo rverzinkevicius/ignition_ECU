@@ -95,8 +95,8 @@ last_update_rpm=millis();
 
 
 
-if (((micros()-pickup)>=dwell_start) && (!rpmflag)) {digitalwirte(sparkpin,HIGH);}
-if ((micros()-pickup)>=spark) {digitalwirte(sparkpin,LOW);}
+if (((micros()-pickup)>=dwell_start) && (!rpmflag)) {digitalwirte(sparkpin,LOW);}
+if ((micros()-pickup)>=spark) {digitalwirte(sparkpin,HIGH);}
 
 
 
