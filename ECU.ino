@@ -1,11 +1,11 @@
 #include <ESP8266WiFi.h>
 
 
-int sparkpin= D1;
+int sparkpin= D1;  //SCR control pin
+int DCDCpin= D2;   //DC-DC converter enable/disable pin  0-enabled, 1-disabled
 
 int advance = 0;
 unsigned long pickup=0;
-int dwell_duration=3500;
 
 
 int rpmpin = D2;
@@ -30,7 +30,6 @@ void setup()   {
 
  Serial.begin(115200);
 
-  pinMode(button,INPUT);
   pinMode(rpmpin,INPUT);
 
 
@@ -78,31 +77,26 @@ if (rpm>=8000) {advance = 30;}
 
 spark=duration_rpmTmp*(63-advance)/360;   // 63 (or 60?) is degrees BTDC of pickup signal for Piaggio LEADER engine
 
-dwell_start=duration_rpmTmp + spark - dwell_duration;
-
-if (dwell_start>=duration_rpmTmp) {dwell_start-=duration_rpmTmp;} 
-
-
+//printing for logging purposes
   Serial.print(rpm);
   Serial.print(",");
-  Serial.print(spark);
-  Serial.print(",");
-  Serial.println(dwell_start);
+  Serial.println(spark);
 
 last_update_rpm=millis();
 
 }
 
 
+if ((micros()-pickup)>=spark) {    //if time for spark
+  digitalwirte(DCDCpin,HIGH);      //disable DC-DC converter
+  digitalwirte(sparkpin,HIGH);     //activate SCR
+  delaymicroseconds(200);          //let it spark
+  digitalwirte(DCDCpin,LOW);       //enable DC-DC converter and start charging capcitor
+}
 
-if (((micros()-pickup)>=dwell_start) && (!rpmflag)) {digitalwirte(sparkpin,LOW);}
-if ((micros()-pickup)>=spark) {digitalwirte(sparkpin,HIGH);}
 
 
-
-
-
-yield(); 
+yield();  //feed the dog
 }
 
 
