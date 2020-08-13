@@ -91,6 +91,7 @@ if ((micros()-pickup)>=spark) {    //if time for spark
   digitalwirte(DCDCpin,HIGH);      //disable DC-DC converter
   digitalwirte(sparkpin,HIGH);     //activate SCR
   delaymicroseconds(200);          //let it spark
+  digitalwirte(sparkpin,LOW);     //deactivate SCR
   digitalwirte(DCDCpin,LOW);       //enable DC-DC converter and start charging capcitor
 }
 
