@@ -7,12 +7,21 @@ Will use http://www.sportdevices.com/ignition/inverter.htm to get 200-300V from 
 Do not know how to use arrays for ignition advance table, so have used below approach to mimic standard ignition curve:
 
 if (rpm<1000) {advance = 10;}
+
 if ((rpm>=1000) && (rpm<1300)) {advance = 17;}
+
 if ((rpm>=1300) && (rpm<1500)) {advance = 30-RPM/100;}
+
 if ((rpm>=1500) && (rpm<3000)) {advance = 15;}
+
 if ((rpm>=3000) && (rpm<4000)) {advance = 0.013*RPM-24;}
+
 if ((rpm>=4000) && (rpm<7000)) {advance = 28;}
+
 if ((rpm>=7000) && (rpm<8000)) {advance = 0.002*RPM+14;}
+
 if (rpm>=8000) {advance = 30;}
 
-![img]advance.png
+
+
+![img](https://raw.githubusercontent.com/rverzinkevicius/ignition_ECU/master/advance.png)
