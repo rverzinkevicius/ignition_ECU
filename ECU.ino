@@ -16,6 +16,7 @@ unsigned long last_update_rpm=0;
 bool rpmflag=true;
 bool rpmupdated=false;
 unsigned long duration_rpmTmp=0;
+unsigned long last_spark=0;
 volatile unsigned long duration_rpm=0;
 volatile unsigned long last_rpm=0;
 
@@ -31,6 +32,8 @@ void setup()   {
  Serial.begin(115200);
 
   pinMode(rpmpin,INPUT);
+  pinMode(sparkpin,OUTPUT);
+  pinMode(DCDCpin,OUTPUT); 
 
 
   attachInterrupt(digitalPinToInterrupt(rpmpin), rpm_counter, RISING); 
@@ -92,9 +95,25 @@ if ((micros()-pickup)>=spark) {    //if time for spark
   digitalwirte(sparkpin,HIGH);     //activate SCR
   delaymicroseconds(200);          //let it spark
   digitalwirte(sparkpin,LOW);     //deactivate SCR
-  digitalwirte(DCDCpin,LOW);       //enable DC-DC converter and start charging capcitor
+  last_spark=micros();
 }
 
+//below if-else sets dwell time to 7-8ms  
+  
+if (duration_rpmTmp>8000) 
+{ 
+  if ((micros()-last_spark)>(duration_rpmTmp-7000))
+
+{
+   digitalwirte(DCDCpin,LOW);  
+}
+}
+  
+else
+{  
+  digitalwirte(DCDCpin,LOW);       
+}
+  
 
 
 yield();  //feed the dog
