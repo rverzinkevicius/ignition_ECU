@@ -8,7 +8,7 @@ int advance = 0;
 unsigned long pickup=0;
 
 
-int rpmpin = D2;
+int rpmpin = D5;
 int rpm = 1;
 float rpmai = 1;
 unsigned long elapsedt_rpm = 1;
