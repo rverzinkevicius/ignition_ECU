@@ -1,14 +1,14 @@
 #include <ESP8266WiFi.h>
 
 
-int sparkpin= D1;  //SCR control pin
+int sparkpin= D5;  //SCR control pin, can be connected to DCDCpin to save GPIOs/wires
 int DCDCpin= D2;   //DC-DC converter enable/disable pin  0-enabled, 1-disabled
 
 int advance = 0;
 unsigned long pickup=0;
 
 
-int rpmpin = D5;
+int rpmpin = D1;
 int rpm = 1;
 float rpmai = 1;
 unsigned long elapsedt_rpm = 1;
@@ -98,7 +98,7 @@ if ((micros()-pickup)>=spark) {    //if time for spark
   last_spark=micros();
 }
 
-//below if-else sets dwell time to 7-8ms  
+//below if-else sets dwell time to 7-8ms
   
 if (duration_rpmTmp>8000) 
 { 
