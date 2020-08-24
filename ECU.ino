@@ -1,8 +1,8 @@
 #include <ESP8266WiFi.h>
 
 
-int sparkpin= D5;  //SCR control pin, can be connected to DCDCpin to save GPIOs/wires
-int DCDCpin= D2;   //DC-DC converter enable/disable pin  0-enabled, 1-disabled
+int sparkpin= D2;  //SCR control pin, can be connected to DCDCpin to save GPIOs/wires
+//int DCDCpin= D5;   //DC-DC converter enable/disable pin  0-enabled, 1-disabled. Can be connected to sparkpin, as DCDC will shut itself off when preset capacitor voltage is reached 
 
 int advance = 0;
 unsigned long pickup=0;
@@ -33,7 +33,7 @@ void setup()   {
 
   pinMode(rpmpin,INPUT);
   pinMode(sparkpin,OUTPUT);
-  pinMode(DCDCpin,OUTPUT); 
+//  pinMode(DCDCpin,OUTPUT); 
 
 
   attachInterrupt(digitalPinToInterrupt(rpmpin), rpm_counter, RISING); 
@@ -91,7 +91,7 @@ last_update_rpm=millis();
 
 
 if ((micros()-pickup)>=spark) {    //if time for spark
-  digitalwirte(DCDCpin,HIGH);      //disable DC-DC converter
+//  digitalwirte(DCDCpin,HIGH);      //disable DC-DC converter
   digitalwirte(sparkpin,HIGH);     //activate SCR
   delaymicroseconds(200);          //let it spark
   digitalwirte(sparkpin,LOW);     //deactivate SCR
@@ -99,7 +99,7 @@ if ((micros()-pickup)>=spark) {    //if time for spark
 }
 
 //below if-else sets dwell time to 7-8ms
-  
+/*  
 if (duration_rpmTmp>8000) 
 { 
   if ((micros()-last_spark)>(duration_rpmTmp-7000))
@@ -114,7 +114,7 @@ else
   digitalwirte(DCDCpin,LOW);       
 }
   
-
+*/
 
 yield();  //feed the dog
 }
