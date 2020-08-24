@@ -2,7 +2,7 @@
 
 Ignition for scooter with Piaggio LEADER engine using ESP8266
 
-Will use http://www.sportdevices.com/ignition/inverter.htm to get 200-300V from 12V to charge CDI capacitor
+Will use combination of http://www.sportdevices.com/ignition/inverter.htm and https://transmic.net/2016/07/17/dc-cdi-v2/ to get 200-300V from 12V to charge CDI capacitor
 
 Do not know how to use arrays for ignition advance table, so have used below approach to mimic standard ignition curve:
 
