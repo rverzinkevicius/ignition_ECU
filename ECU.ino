@@ -21,7 +21,7 @@ unsigned long loop_time=0;
 volatile unsigned long duration_rpm=0;
 volatile unsigned long last_rpm=0;
 
-unsigned long  spark = 0;
+unsigned long spark = 0;
 
 
 void setup()   {   
@@ -80,11 +80,9 @@ if (rpm>=8000) {advance = 30;}
 spark=duration_rpmTmp*(63-advance)/360;   // 63 (or 60?) is degrees BTDC of pickup signal for Piaggio LEADER engine
 
 //printing for logging purposes
-  Serial.print(micros()-loop_time);
-  Serial.print(",");
   Serial.print(rpm);
   Serial.print(",");
-  Serial.println(spark);
+  Serial.println(advance);
 
 last_update_rpm=millis();
 
