@@ -21,6 +21,7 @@ unsigned long loop_time=0;
 volatile unsigned long duration_rpm=0;
 volatile unsigned long last_rpm=0;
 
+unsigned long  spark = 0;
 
 
 void setup()   {   
@@ -68,11 +69,11 @@ if (rpmupdated){
 
 if (rpm<1000) {advance = 10;}
 if ((rpm>=1000) && (rpm<1300)) {advance = 17;}
-if ((rpm>=1300) && (rpm<1500)) {advance = 30-RPM/100;}
+if ((rpm>=1300) && (rpm<1500)) {advance = 30-rpm/100;}
 if ((rpm>=1500) && (rpm<3000)) {advance = 15;}
-if ((rpm>=3000) && (rpm<4000)) {advance = 0.013*RPM-24;}
+if ((rpm>=3000) && (rpm<4000)) {advance = 0.013*rpm-24;}
 if ((rpm>=4000) && (rpm<7000)) {advance = 28;}
-if ((rpm>=7000) && (rpm<8000)) {advance = 0.002*RPM+14;}
+if ((rpm>=7000) && (rpm<8000)) {advance = 0.002*rpm+14;}
 if (rpm>=8000) {advance = 30;}
 
 
@@ -92,10 +93,10 @@ last_update_rpm=millis();
   loop_time=micros(); 
 
 if ((micros()-pickup)>=spark) {    //if time for spark
-//  digitalwirte(DCDCpin,HIGH);      //disable DC-DC converter
-  digitalwirte(sparkpin,HIGH);     //activate SCR
-  delaymicroseconds(200);          //let it spark
-  digitalwirte(sparkpin,LOW);     //deactivate SCR
+//  digitalWrite(DCDCpin,HIGH);      //disable DC-DC converter
+  digitalWrite(sparkpin,HIGH);     //activate SCR
+  delayMicroseconds(200);          //let it spark
+  digitalWrite(sparkpin,LOW);     //deactivate SCR
   last_spark=micros();
 }
 
@@ -104,7 +105,6 @@ if ((micros()-pickup)>=spark) {    //if time for spark
 if (duration_rpmTmp>8000) 
 { 
   if ((micros()-last_spark)>(duration_rpmTmp-7000))
-
 {
    digitalwirte(DCDCpin,LOW);  
 }
@@ -132,6 +132,3 @@ if ((micros()-last_rpm)>5900)         //debounce signal. Take MAX RPM of engine 
   rpmupdated=true;
  }
 }
-
-
-
