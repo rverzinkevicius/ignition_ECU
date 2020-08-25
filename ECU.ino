@@ -17,6 +17,7 @@ bool rpmflag=true;
 bool rpmupdated=false;
 unsigned long duration_rpmTmp=0;
 unsigned long last_spark=0;
+unsigned long loop_time=0;
 volatile unsigned long duration_rpm=0;
 volatile unsigned long last_rpm=0;
 
@@ -38,14 +39,11 @@ void setup()   {
 
   attachInterrupt(digitalPinToInterrupt(rpmpin), rpm_counter, RISING); 
 
-
-
 }
+
 
 void loop() 
  {
-
- 
 
 if ((millis()-last_update_rpm) >100)
 {
@@ -81,6 +79,8 @@ if (rpm>=8000) {advance = 30;}
 spark=duration_rpmTmp*(63-advance)/360;   // 63 (or 60?) is degrees BTDC of pickup signal for Piaggio LEADER engine
 
 //printing for logging purposes
+  Serial.print(micros()-loop_time);
+  Serial.print(",");
   Serial.print(rpm);
   Serial.print(",");
   Serial.println(spark);
@@ -88,7 +88,8 @@ spark=duration_rpmTmp*(63-advance)/360;   // 63 (or 60?) is degrees BTDC of pick
 last_update_rpm=millis();
 
 }
-
+  
+  loop_time=micros(); 
 
 if ((micros()-pickup)>=spark) {    //if time for spark
 //  digitalwirte(DCDCpin,HIGH);      //disable DC-DC converter
@@ -115,6 +116,7 @@ else
 }
   
 */
+  
 
 yield();  //feed the dog
 }
