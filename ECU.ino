@@ -22,7 +22,7 @@ volatile unsigned long duration_rpm=0;
 volatile unsigned long last_rpm=0;
 
 unsigned long spark = 0;
-
+bool fired = true;
 
 void setup()   {   
 
@@ -64,7 +64,8 @@ if (rpmupdated){
  rpmai = 60000000/duration_rpmTmp;
  rpm = round (rpmai);
 
-
+fired = false;
+  
 // below is ignition advance degree calculation
 
 if (rpm<1000) {advance = 10;}
@@ -90,12 +91,13 @@ last_update_rpm=millis();
   
   loop_time=micros(); 
 
-if ((micros()-pickup)>=spark) {    //if time for spark
+if (((micros()-pickup)>=spark) && !fired) {    //if time for spark
 //  digitalWrite(DCDCpin,HIGH);      //disable DC-DC converter
   digitalWrite(sparkpin,HIGH);     //activate SCR
   delayMicroseconds(200);          //let it spark
   digitalWrite(sparkpin,LOW);     //deactivate SCR
   last_spark=micros();
+  fired = true;
 }
 
 //below if-else sets dwell time to 7-8ms
